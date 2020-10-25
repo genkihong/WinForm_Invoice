@@ -220,7 +220,10 @@
       this.Controls.Add(this.label2);
       this.Controls.Add(this.txtYear);
       this.Controls.Add(this.label1);
+      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+      this.MaximizeBox = false;
       this.Name = "AddForm";
+      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "AddForm";
       this.Load += new System.EventHandler(this.AddForm_Load);
       this.ResumeLayout(false);

@@ -14,7 +14,6 @@ namespace Invoice
 {
   public partial class Form1 : Form
   {
-    private string config = @"Data Source=.\SQLEXPRESS;Initial Catalog=Demo;Integrated Security=True";
     private SqlCommandBuilder scb;
     SqlDataAdapter sda;
     DataTable dt;
@@ -57,6 +56,7 @@ namespace Invoice
       if (addForm.ShowDialog() != DialogResult.OK) return;
 
       DataRow dr = dt.NewRow();
+
       dr["Year"] = addForm.invoiceNum.Year;
       dr["Month"] = addForm.invoiceNum.Month;
       dr["Letter"] = addForm.invoiceNum.Letter;
@@ -64,6 +64,7 @@ namespace Invoice
       dr["EndNum"] = addForm.invoiceNum.EndNum;
       dr["CurrentNum"] = addForm.invoiceNum.CurrentNum;
       dr["CreateDate"] = DateTime.Now;
+
       dt.Rows.Add(dr);
 
       scb = new SqlCommandBuilder(sda);
@@ -133,6 +134,7 @@ namespace Invoice
     private void dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
     {
       int index = dataGridView.CurrentRow.Index;
+
       if (index == -1) return;
 
       INVOICE_NUM invoiceNum = new INVOICE_NUM
@@ -165,12 +167,17 @@ namespace Invoice
     //刪除
     private void delBtn_Click(object sender, EventArgs e)
     {
-      DialogResult result = MessageBox.Show("確定要刪除?", "訊息", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-      if (result != DialogResult.OK) return;
-
       int index = dataGridView.CurrentRow.Index;
 
-      if (index == -1) return;
+      if (!dataGridView.Rows[index].Selected)
+      {
+        MessageBox.Show("請點擊整列", "訊息", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+        return;
+      }
+
+      DialogResult result = MessageBox.Show("確定要刪除?", "訊息", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+      if (result != DialogResult.OK) return;
 
       dt.Rows[index].Delete();
       scb = new SqlCommandBuilder(sda);
@@ -191,7 +198,7 @@ namespace Invoice
     private void LoadData(string year, string month)
     {
       dataGridView.AutoGenerateColumns = false;
-
+      string config = @"Data Source=.\SQLEXPRESS;Initial Catalog=Demo;Integrated Security=True";
       string query = "select * from INVOICE_NUM where 1=1";
 
       if (!string.IsNullOrEmpty(year))
@@ -210,7 +217,5 @@ namespace Invoice
       sda.Fill(dt);
       dataGridView.DataSource = dt;
     }
-
-
   }
 }
