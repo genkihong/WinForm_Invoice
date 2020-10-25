@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Invoice
@@ -195,6 +188,8 @@ namespace Invoice
     /// <summary>
     /// 載入資料
     /// </summary>
+    /// <param name="year">年度</param>
+    /// <param name="month">月份</param>
     private void LoadData(string year, string month)
     {
       dataGridView.AutoGenerateColumns = false;
